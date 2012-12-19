@@ -1,0 +1,26 @@
+estOrigen;estDestino;duracionTrayecto; numLinea
+Alonso Cano;Gregorio Marañon;4;7
+Gregorio Marañon;Nuevos Ministerios;2;10
+Gregorio Marañon;Alonso Martinez;3;10
+Gregorio Marañon;Avenida de America;5;7
+Avenida de América;Cruz del Rayo;2;6
+Avenida de América;República Argentina;3;6
+Avenida de América;Diego de León;3;6
+Nuevos Ministerios;Santiago Bernabeu;3;10
+Nuevos Ministerios;República Argentina;4;6
+Nuevos Ministerios;Colombia;6;8
+Nuevos Ministerios;Cuatro Caminos;7;6
+Alonso Martinez;Rubén Darío;4;5
+Alonso Martinez;Bilbao;5;4
+Cruz del Rayo;Concha Espina;2;9
+Diego de León;Nuñez de Balboa;3;5
+Santiago Bernabeu;Cuzco;4;10
+Cuatro Caminos;Ríos Rosas;2;1
+Colombia;Concha Espina;3;9
+Colombia;Pío XII;4;9
+Rubén Darío;Núñez de Balboa;3;5
+Bilbao;Iglesia;2;1
+Cuzco;Plaza de Castilla;2;10
+Ríos Rosas;Iglesia;3;1
+Pío XII;Duque de Pastrana;5;9
+Plaza de Castilla;Duque Pastrana;3;9
