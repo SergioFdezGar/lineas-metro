@@ -3,7 +3,6 @@ public class Estacion {
 
 	private String nombre;
 	/**
-	 * @param codigo
 	 * @param nombre
 	 */
 	public Estacion(String nombre) {
@@ -37,10 +36,20 @@ public class Estacion {
 			if (other.nombre != null) {
 				igual= false;
 			}
-		} else if (!nombre.equals(other.nombre)) {
-			igual= false;
+		}else{	
+			if (!nombre.equals(other.nombre)) {
+				igual= false;
+			}
 		}
 		return igual;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Estacion [nombre=" + nombre + "]";
 	}
 	
 }

@@ -5,7 +5,6 @@ public class ElementoDecorado <T>{
   boolean visitado=false;      // Atributo de nodo visitado
   ElementoDecorado<T> parent=null; // Nodo desde el que se accedió a éste
   int distance=0;              // Distancia (en vértices) desde el nodo original
-  int linea=0;				//Nº de linea por el que está unido
   T aristaParent=null;      //Arista del nodo parent
 
   public ElementoDecorado (T element){
@@ -36,26 +35,13 @@ public class ElementoDecorado <T>{
   public void setDistancia(int d){
     distance=d;
   }
-  /**
- * @return the linea
- */
-public int getLinea() {
-	return linea;
-}
 
-/**
- * @param linea the linea to set
- */
-public void setLinea(int linea) {
-	this.linea = linea;
-}
-
-public void setVisitado(boolean t){
+  public void setVisitado(boolean t){
     visitado=t;
   }
   public void setAristaParent(T arista){
     aristaParent=arista;
-  }
+  }  
   
   public boolean equals (ElementoDecorado n){
     return elemento.equals(n.elemento()); //elemento tiene que tener sobrescrito equals()
