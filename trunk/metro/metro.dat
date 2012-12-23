@@ -1,4 +1,3 @@
-estOrigen;estDestino;duracionTrayecto; numLinea
 Alonso Cano;Gregorio Marañon;4;7
 Gregorio Marañon;Nuevos Ministerios;2;10
 Gregorio Marañon;Alonso Martinez;3;10
@@ -23,4 +22,5 @@ Bilbao;Iglesia;2;1
 Cuzco;Plaza de Castilla;2;10
 Ríos Rosas;Iglesia;3;1
 Pío XII;Duque de Pastrana;5;9
+Plaza de Castilla;Duque Pastrana;3;9
 Plaza de Castilla;Duque Pastrana;3;9
