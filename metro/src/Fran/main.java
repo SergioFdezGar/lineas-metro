@@ -66,7 +66,6 @@ public class main {
 			Vertex v= grafo.insertVertex(n2);
 			
 			
-			
 			//Ahora debemos ver si existen los elementos en el grafo
 			
 			//Si no  se introducen ambos,
