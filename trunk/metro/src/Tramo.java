@@ -2,6 +2,7 @@
 public class Tramo {
 	private int duracion;
 	private int linea;
+	
 	/**
 	 * @param linea
 	 * @param duracion
@@ -9,12 +10,6 @@ public class Tramo {
 	public Tramo(int duracion, int linea) {
 		this.duracion = duracion;
 		this.linea = linea;
-	}
-	
-	public Tramo(String duracion, String linea) {
-		this.duracion = Integer.parseInt(duracion);
-		this.linea = Integer.parseInt(linea);
-		
 	}
 	
 	/**

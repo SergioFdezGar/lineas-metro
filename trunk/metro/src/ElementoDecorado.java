@@ -43,7 +43,7 @@ public class ElementoDecorado <T>{
     aristaParent=arista;
   }  
   
-  public boolean equals (ElementoDecorado n){
+  public boolean equals (ElementoDecorado<T> n){
     return elemento.equals(n.elemento()); //elemento tiene que tener sobrescrito equals()
   }
   public String toString(){
