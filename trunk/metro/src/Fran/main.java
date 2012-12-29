@@ -1,21 +1,21 @@
 package Fran;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 
 import net.datastructures.AdjacencyListGraph;
+import net.datastructures.Dijkstra;
 import net.datastructures.Edge;
 import net.datastructures.Graph;
-import net.datastructures.InvalidPositionException;
 import net.datastructures.Vertex;
 
 /**
  * @author Sergio Fernandez Garcia, Fco. Jose Lucas Violero
- * 			
- *
+ * 
+ * 
  */
 public class main {
 
@@ -25,74 +25,195 @@ public class main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		
-		Graph grafo=new AdjacencyListGraph();
-		File f=new File("metro.dat");
-		
+		Graph<ElementoDecorado<Estacion>, ElementoDecorado<Tramo>> grafo = new AdjacencyListGraph<ElementoDecorado<Estacion>, ElementoDecorado<Tramo>>();
+		File f = new File("metro.dat");
+
 		try {
-			Scanner	datos = new Scanner(f);
-			grafo=construyeGrafo(datos);
+			Scanner datos = new Scanner(f);
+			grafo = construyeGrafo(datos);
+			System.out.println("Listado de estaciones y adyacentes");
+			//mostrarGrafo(grafo);
+			dijkstra(grafo);
+			// System.out.print(grafo.toString());
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	private static void dijkstra(Graph<ElementoDecorado<Estacion>, ElementoDecorado<Tramo>> grafo) {
+		
+		Dijkstra graf=new Dijkstra();
+		ElementoDecorado<Estacion> n1 = null;
+		ElementoDecorado<Estacion> n2 = null;
+		Vertex<ElementoDecorado<Estacion>> u = null;
+		Vertex<ElementoDecorado<Estacion>> v = null;
+		Vertex<ElementoDecorado<Estacion>> aux = null;
+		Iterator<Vertex<ElementoDecorado<Estacion>>> iter = null;
+		iter = grafo.vertices().iterator();
+		Estacion est_origen = new Estacion("Alonso Cano");
+		Estacion est_destino = new Estacion("Gregorio Marañon");
+		// Creamos el elementoDecorado para crear los vertices
+		n1 = new ElementoDecorado<Estacion>(est_origen);
+		n2 = new ElementoDecorado<Estacion>(est_destino);
+		
+		boolean n1_existe=false;
+		boolean n2_existe=false;
+		
+		while (iter.hasNext()&& n1_existe==false) {
+		
+			// Comprobamos si ya existen los vértices
+			aux = iter.next();
 
-	protected static Graph construyeGrafo(Scanner datos) {
+			// Si la estación origen existe.
+			if (aux.element().equals(n1)) {
+				// System.out.println("Estacion Origen "+
+				// aux.element().toString() + " repetida.");
+				u = aux;
+				n1_existe = true;
+			}
+		}
+		
+		while (iter.hasNext()&& n2_existe==false) {
+			aux = iter.next();
+			System.out.println("ENTRA");
+			if (aux.element().equals(n2)) {
+
+				// System.out.println("Estacion Destino "+
+				// aux.element().toString() + " repetida.");
+				v = aux;
+				n2_existe = true;
+			}
+		}
+		System.out.println("ENTRA2");
+		System.out.println("DISTRA FRAN N1"+u.element().elemento.getNombre());
+		System.out.println("DISTRA FRAN N2"+v.element().elemento.getNombre());
+	
+		////%%%% PARA PODER SEGUIR CON LO DE DIJKSTRA ME FALTA POR SABER
+		////%%%% QUE TIPO DE OBJETO DEBERIA SER AUX2 
+		///%%%% PORQUE SE SUPONE QUE ES EL PESO DE LA ARISTA, ES DECIR LA DURACI�N PERO HE PROBADO
+		///%%% DE TODAS LAS MANERAS QUE SE ME OCURRE Y NO HAY MANERA ASIQUE ECHALE UN VISTAZO Y ME DICES
+		graf.execute(grafo, u,aux2);
+		System.out.print(graf.getDist(v));
+		
+	}
+
+	private static void mostrarGrafo(
+			Graph<ElementoDecorado<Estacion>, ElementoDecorado<Tramo>> grafo) {
 		// TODO Auto-generated method stub
-		Graph grafo= new AdjacencyListGraph();
-		ElementoDecorado<Estacion> n1=null;
-		ElementoDecorado<Estacion> n2= null;
-//		
+		Iterator <Vertex<ElementoDecorado<Estacion>>> iter= grafo.vertices().iterator();
 		
-		//Declaración de objetos y variables
-//		Iterator<Vertex<ElementoDecorado<Estacion>>> it;
-		
-		
-		
-		datos.useDelimiter("[\\;\\n]");
-		
-		while (datos.hasNext()){
+		while(iter.hasNext()){
+			//Vamos pasando de estación en estacion y mostramos los vértices adyacentes
+			//Con la correspondiente arista.
 			
-			Estacion est_origen= new Estacion(datos.next());
-			Estacion est_destino= new Estacion(datos.next());
+			//Recogemos el vétice
+			Vertex<ElementoDecorado<Estacion>> v_est= iter.next();
+			System.out.print(v_est.element().elemento.getNombre());
+			System.out.println("\nCorrespondencias con:");
+			Iterator <Edge<ElementoDecorado<Tramo>>> iter_edges= grafo.incidentEdges(v_est).iterator();
 			
-			n1=new ElementoDecorado<Estacion>(est_origen);
-			n2=new ElementoDecorado<Estacion>(est_destino);
-
-			
-			Vertex u= grafo.insertVertex(n1);
-			Vertex v= grafo.insertVertex(n2);
-			
-			
-			//Ahora debemos ver si existen los elementos en el grafo
-			
-			//Si no  se introducen ambos,
-			
-			//Si es sólo uno, se agrega el que no con la arista correspondiente
-			
-			//Si exiten los dos y no están conectado se crea la arista
-			
-			
-			System.out.println(datos.next());
-			System.out.println(datos.next());
-//			System.out.println(n);
-//			n++;
-//			
-
-//			
-//			System.out.println(n);
-//			
-//			if(!grafo.areAdjacent(u, v)){
-//				grafo.insertEdge(u, v, null);
-//			}
-			
+			while(iter_edges.hasNext()){
+				Edge<ElementoDecorado<Tramo>> ed_est= iter_edges.next();
+				ElementoDecorado<Tramo> elemento_tramo= ed_est.element();
+				//Hay que mostrar el nombre de la estacion destino teniendo el cuenta la arista (tramo)
+				System.out.println("Estacion -> " + grafo.opposite(v_est, ed_est).element().elemento.getNombre());
+				System.out.println("\t --> Linea:" + elemento_tramo.elemento().getLinea());
+				System.out.println("\t --> Duracion:" + elemento_tramo.elemento().getduracion());
+				
+				
+			}
 			
 		}
 		
-		
-		
+	}
+
+	private static Graph<ElementoDecorado<Estacion>, ElementoDecorado<Tramo>> construyeGrafo(
+			Scanner datos) {
+		// TODO Auto-generated method stub
+		Graph<ElementoDecorado<Estacion>, ElementoDecorado<Tramo>> grafo = new AdjacencyListGraph<ElementoDecorado<Estacion>, ElementoDecorado<Tramo>>();
+
+		ElementoDecorado<Estacion> n1 = null;
+		ElementoDecorado<Estacion> n2 = null;
+		ElementoDecorado<Tramo> tramo = null;
+
+		// Declaración de objetos y variables
+		Iterator<Vertex<ElementoDecorado<Estacion>>> iter = null;
+
+		// Lectura del archivo de texto
+		datos.useDelimiter("[\\;\\n]"); // Delimitadores ';' y salto de linea
+
+		int pasada = 1;
+		while (datos.hasNext()) {
+			//System.out.println("\tPasada # " + pasada);
+			iter = grafo.vertices().iterator();
+
+			// Creamos las estaciones de origen y destino
+			Estacion est_origen = new Estacion(datos.next());
+			Estacion est_destino = new Estacion(datos.next());
+			// Creamos el elementoDecorado para crear los vertices
+			n1 = new ElementoDecorado<Estacion>(est_origen);
+			n2 = new ElementoDecorado<Estacion>(est_destino);
+
+			// Creamos el tramo entre las estaciones de origen y destino
+			int linea = new Integer(datos.nextInt());
+			int duracion = new Integer(datos.nextInt());
+
+			Tramo camino = new Tramo(linea, duracion);
+			// Tramo camino= new Tramo(datos.nextInt(), datos.nextInt());
+			// Creamos el elementoDecorado para crear la arista
+			tramo = new ElementoDecorado<Tramo>(camino);
+
+			// Objeto Vertex auxiliar.
+
+			Vertex<ElementoDecorado<Estacion>> u = null;
+			Vertex<ElementoDecorado<Estacion>> v = null;
+			Vertex<ElementoDecorado<Estacion>> aux = null;
+			boolean n1_existe = false;
+			boolean n2_existe = false;
+
+			// Parte en la que vemos si coinciden los vertices
+			while (iter.hasNext()) {
+
+				// Comprobamos si ya existen los vértices
+				aux = iter.next();
+
+				// Si la estación origen existe.
+				if (aux.element().equals(n1)) {
+					// System.out.println("Estacion Origen "+
+					// aux.element().toString() + " repetida.");
+					u = aux;
+					n1_existe = true;
+				}
+
+				if (aux.element().equals(n2)) {
+
+					// System.out.println("Estacion Destino "+
+					// aux.element().toString() + " repetida.");
+					v = aux;
+					n2_existe = true;
+				}
+			}
+
+			// Creamos los vertices para poder agregarlos al grafo
+			if (!n1_existe) {
+				u = grafo.insertVertex(n1);
+			}
+
+			if (!n2_existe) {
+				v = grafo.insertVertex(n2);
+			}
+
+			if (!grafo.areAdjacent(u, v)) {
+				grafo.insertEdge(u, v, tramo);
+			} else {
+				// System.out.println("El vertice ya existe");
+			}
+			//System.out.println("\tNumero vertices: " + grafo.numVertices());
+			pasada++;
+		}
+
 		return grafo;
 	}
+
 }
