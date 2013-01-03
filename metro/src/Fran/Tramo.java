@@ -1,6 +1,8 @@
 package Fran;
 
-public class Tramo {
+
+
+public class Tramo implements Comparable<Tramo>{
 	private int duracion;
 	private int linea;
 	
@@ -77,6 +79,18 @@ public class Tramo {
 	@Override
 	public String toString() {
 		return "Tramo [linea=" + linea + ", duracion=" + duracion + "]";
+	}
+
+	@Override
+	public int compareTo(Tramo arg) {
+		int ord = 0;
+
+		if (this.duracion>(arg.getduracion()))
+			ord = 1;
+		if (this.duracion<(arg.getduracion()))
+			ord = -1;
+
+		return ord;
 	}
 	
 	

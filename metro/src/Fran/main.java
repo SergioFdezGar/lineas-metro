@@ -1,9 +1,13 @@
 package Fran;
 
+
+
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 
 import net.datastructures.AdjacencyListGraph;
@@ -42,60 +46,114 @@ public class main {
 	}
 
 	private static void dijkstra(Graph<ElementoDecorado<Estacion>, ElementoDecorado<Tramo>> grafo) {
+		Scanner leer =new Scanner (System.in);
+		Vertex<ElementoDecorado<Estacion>> est1=null;
+		Vertex<ElementoDecorado<Estacion>> est2=null;
+		System.out.print("Introduce el nombre de la estacion de origen\n");
+		est1=obtenerestacion(grafo,leer.nextLine());
+		if(est1==null){
+			System.out.print("ERROR");
+		}
+		System.out.print("Introduce el nombre de la estacion de destino\n");
+		est2=obtenerestacion(grafo,leer.nextLine());
+		if(est2==null){
+			System.out.print("ERROR");
+		}
 		
-		Dijkstra graf=new Dijkstra();
-		ElementoDecorado<Estacion> n1 = null;
-		ElementoDecorado<Estacion> n2 = null;
-		Vertex<ElementoDecorado<Estacion>> u = null;
-		Vertex<ElementoDecorado<Estacion>> v = null;
-		Vertex<ElementoDecorado<Estacion>> aux = null;
-		Iterator<Vertex<ElementoDecorado<Estacion>>> iter = null;
-		iter = grafo.vertices().iterator();
-		Estacion est_origen = new Estacion("Alonso Cano");
-		Estacion est_destino = new Estacion("Gregorio Mara√±on");
-		// Creamos el elementoDecorado para crear los vertices
-		n1 = new ElementoDecorado<Estacion>(est_origen);
-		n2 = new ElementoDecorado<Estacion>(est_destino);
 		
-		boolean n1_existe=false;
-		boolean n2_existe=false;
-		
-		while (iter.hasNext()&& n1_existe==false) {
-		
-			// Comprobamos si ya existen los v√©rtices
-			aux = iter.next();
+		boolean es=false;
+		ArrayList <Vertex<ElementoDecorado<Estacion>>> informacion=new ArrayList<Vertex<ElementoDecorado<Estacion>>> ();
+		informacion.add(est1);
+		Vertex<ElementoDecorado<Estacion>> est3=est1;
+		Vertex<ElementoDecorado<Estacion>> est4=null;
+		while(es==false){
 
-			// Si la estaci√≥n origen existe.
-			if (aux.element().equals(n1)) {
-				// System.out.println("Estacion Origen "+
-				// aux.element().toString() + " repetida.");
-				u = aux;
-				n1_existe = true;
+			est4=obtenercaminos(grafo,est3,informacion);
+			if(est2.element().elemento.getNombre().equals(est4.element().elemento.getNombre())){
+				es=true;
+				informacion.add(est4);
+			}
+			else{
+				informacion.add(est4);
+				est3=est4;
 			}
 		}
 		
-		while (iter.hasNext()&& n2_existe==false) {
-			aux = iter.next();
-			System.out.println("ENTRA");
-			if (aux.element().equals(n2)) {
-
-				// System.out.println("Estacion Destino "+
-				// aux.element().toString() + " repetida.");
-				v = aux;
-				n2_existe = true;
-			}
+		
+		for(int i=0; i<informacion.size();i++){
+			System.out.print(informacion.get(i).element().elemento.getNombre());
 		}
-		System.out.println("ENTRA2");
-		System.out.println("DISTRA FRAN N1"+u.element().elemento.getNombre());
-		System.out.println("DISTRA FRAN N2"+v.element().elemento.getNombre());
 	
-		////%%%% PARA PODER SEGUIR CON LO DE DIJKSTRA ME FALTA POR SABER
-		////%%%% QUE TIPO DE OBJETO DEBERIA SER AUX2 
-		///%%%% PORQUE SE SUPONE QUE ES EL PESO DE LA ARISTA, ES DECIR LA DURACI”N PERO HE PROBADO
-		///%%% DE TODAS LAS MANERAS QUE SE ME OCURRE Y NO HAY MANERA ASIQUE ECHALE UN VISTAZO Y ME DICES
-		graf.execute(grafo, u,aux2);
-		System.out.print(graf.getDist(v));
 		
+	}
+
+
+	private static Vertex<ElementoDecorado<Estacion>> obtenerestacion(Graph<ElementoDecorado<Estacion>, 
+		ElementoDecorado<Tramo>> grafo,String nombre){
+		
+		Vertex<ElementoDecorado<Estacion>> estacion=null;
+		Iterator <Vertex<ElementoDecorado<Estacion>>> iter= grafo.vertices().iterator();
+		boolean es=false;
+		while(iter.hasNext()&&es==false){
+			Vertex<ElementoDecorado<Estacion>> v_est1= iter.next();
+			if(nombre.equals(v_est1.element().elemento.getNombre())){
+				estacion=v_est1;
+				es=true;
+				
+			}
+		}
+		return estacion;
+		
+	}
+	private static Vertex<ElementoDecorado<Estacion>> obtenercaminos(Graph<ElementoDecorado<Estacion>, 
+		ElementoDecorado<Tramo>> grafo, Vertex<ElementoDecorado<Estacion>> estacion, ArrayList<Vertex<ElementoDecorado<Estacion>>> informacion){
+		PriorityQueue <Integer>list_aux = new PriorityQueue ();
+		Iterator <Edge<ElementoDecorado<Tramo>>> iter_edges= grafo.incidentEdges(estacion).iterator();
+		/*LLENAMOS LA COLA CON EL PESO DE LAS ARISTAS ARISTAS*/
+		while(iter_edges.hasNext()){
+			list_aux.add(iter_edges.next().element().elemento.getduracion());
+		}
+		
+		/*COMO LA CABEZA DE LA COLA CONTIENE LA DURACI”N DE LA ARISTA CON MENORO PESO*/
+		boolean fin=false;
+		iter_edges= grafo.incidentEdges(estacion).iterator();
+		Edge<ElementoDecorado<Tramo>> aux=null;
+		Edge<ElementoDecorado<Tramo>> aux1=null;
+		while(iter_edges.hasNext()&&fin==false){
+			aux1=iter_edges.next();
+			if(list_aux.peek()==aux1.element().elemento.getduracion()){
+				aux=aux1;
+				fin=true;
+			}
+	
+		}
+		fin=false;
+		Vertex<ElementoDecorado<Estacion>> ver_aux=grafo.opposite(estacion, aux);
+		/*Esto es para la estacion esta repetida */
+		for(int i=0;i<informacion.size()&&fin==false;i++){
+			if(informacion.get(i).element().elemento.getNombre().equals(ver_aux.element().elemento.getNombre())){
+				list_aux.poll();
+				aux=repetido(list_aux,(iter_edges= grafo.incidentEdges(estacion).iterator()));
+				fin=true;
+			}
+		}
+		return grafo.opposite(estacion, aux);
+	}
+	
+	private static Edge<ElementoDecorado<Tramo>> repetido(PriorityQueue <Integer>list_aux,Iterator <Edge<ElementoDecorado<Tramo>>> iter_edges){
+		/*Si esta repetido como hemos quitado su arista de la cola cogemos la siguiente */
+		Edge<ElementoDecorado<Tramo>> aux=null;
+		Edge<ElementoDecorado<Tramo>> aux1=null;
+		boolean fin=false;
+		while(iter_edges.hasNext()&&fin==false){
+			aux1=iter_edges.next();
+			if(list_aux.peek()==aux1.element().elemento.getduracion()){
+				aux=aux1;
+				fin=true;
+			}
+	
+		}
+		return aux;
 	}
 
 	private static void mostrarGrafo(
