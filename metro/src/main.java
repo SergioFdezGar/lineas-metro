@@ -28,7 +28,7 @@ public class main {
 			Scanner datos = new Scanner(f);
 			grafo = construyeGrafo(datos);
 			System.out.println("Listado de estaciones y adyacentes");
-			mostrarGrafo(grafo);
+			//mostrarGrafo(grafo);
 
 			// Parte en la que recogemos dos estaciones y marcamos el camino más
 			// corto.
@@ -86,7 +86,8 @@ public class main {
 
 		//LLamamos a la funcíon de Dijkstra.
 		Dijkstra<V, E> dijkstra= new Dijkstra<V, E>();
-		//dijkstra.execute(G,u,null);
+		
+		dijkstra.execute(G, u, u.element());
 		
 		
 	}

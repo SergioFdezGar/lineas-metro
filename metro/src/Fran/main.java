@@ -38,6 +38,7 @@ public class main {
 			System.out.println("Listado de estaciones y adyacentes");
 			//mostrarGrafo(grafo);
 			dijkstra(grafo);
+			
 			// System.out.print(grafo.toString());
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -59,9 +60,10 @@ public class main {
 		if(est2==null){
 			System.out.print("ERROR");
 		}
+		Dkjstra dkjstra=new Dkjstra();
+		dkjstra.calcular(grafo, est1);
 		
-		
-		boolean es=false;
+		/*boolean es=false;
 		ArrayList <Vertex<ElementoDecorado<Estacion>>> informacion=new ArrayList<Vertex<ElementoDecorado<Estacion>>> ();
 		informacion.add(est1);
 		Vertex<ElementoDecorado<Estacion>> est3=est1;
@@ -82,7 +84,7 @@ public class main {
 		
 		for(int i=0; i<informacion.size();i++){
 			System.out.print(informacion.get(i).element().elemento.getNombre());
-		}
+		}*/
 	
 		
 	}

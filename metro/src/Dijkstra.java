@@ -20,7 +20,7 @@ public class Dijkstra<V, E> {
 	/* Cola auxiliar con prioridad */
 	private AdaptablePriorityQueue<Integer, Vertex<V>> Q;
 
-	public void execute(Graph<V, E> g, Vertex<V> s, Object w) {
+	public void execute(Graph<V, E> g, Vertex<ElementoDecorado<Estacion>>  s, Object w) {
 		grafo = g;
 		WEIGHT = w;
 		DefaultComparator dc = new DefaultComparator();
@@ -28,11 +28,11 @@ public class Dijkstra<V, E> {
 		dijkstraVisit(s);
 	}
 
-	public int getDist(Vertex<V> u) {
+	public int getDist(Vertex<ElementoDecorado<Estacion>>  u) {
 		return (Integer) u.get(DIST);
 	}
 
-	public void dijkstraVisit(Vertex<V> v) {
+	public void dijkstraVisit(Vertex<ElementoDecorado<Estacion>>  v) {
 		for (Vertex<V> u : grafo.vertices()) {
 			int u_dist;
 
@@ -61,8 +61,7 @@ public class Dijkstra<V, E> {
 
 			for (Edge<E> e : grafo.incidentEdges(u)) {
 				Vertex<V> z = grafo.opposite(u, e);
-				Entry<Integer, Vertex<V>> z_entry = (Entry<Integer, Vertex<V>>) z
-						.get(ENTRY);
+				Entry<Integer, Vertex<V>> z_entry = (Entry<Integer, Vertex<V>>)z.get(ENTRY);
 
 				if (z_entry != null) {
 					int e_weight = (Integer) e.get(WEIGHT);
