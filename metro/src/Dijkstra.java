@@ -20,19 +20,20 @@ public class Dijkstra<V, E> {
 	/* Cola auxiliar con prioridad */
 	private AdaptablePriorityQueue<Integer, Vertex<V>> Q;
 
-	public void execute(Graph<V, E> g, Vertex<ElementoDecorado<Estacion>>  s, Object w) {
+	public void execute(Graph<V, E> g, Vertex<V>  s, Object w) {
 		grafo = g;
 		WEIGHT = w;
+		System.out.println("Valor de WEIGHT:"+ WEIGHT);
 		DefaultComparator dc = new DefaultComparator();
 		Q = new HeapAdaptablePriorityQueue<Integer, Vertex<V>>(dc);
 		dijkstraVisit(s);
 	}
 
-	public int getDist(Vertex<ElementoDecorado<Estacion>>  u) {
+	public int getDist(Vertex<Estacion>  u) {
 		return (Integer) u.get(DIST);
 	}
 
-	public void dijkstraVisit(Vertex<ElementoDecorado<Estacion>>  v) {
+	public void dijkstraVisit(Vertex<V>  v) {
 		for (Vertex<V> u : grafo.vertices()) {
 			int u_dist;
 
