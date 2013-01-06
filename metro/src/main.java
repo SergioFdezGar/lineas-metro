@@ -2,8 +2,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.Scanner;
+
 import net.datastructures.AdjacencyListGraph;
-import net.datastructures.Dijkstra;
 import net.datastructures.Edge;
 import net.datastructures.Graph;
 import net.datastructures.Vertex;
@@ -21,8 +21,7 @@ public class main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		Graph<Estacion, Tramo> grafo = new AdjacencyListGraph<Estacion, Tramo>();
-		//Graph<ElementoDecorado<Estacion>, ElementoDecorado<Tramo>> grafo = new AdjacencyListGraph<ElementoDecorado<Estacion>, ElementoDecorado<Tramo>>();
+		Graph<ElementoDecorado<Estacion>, Tramo> grafo = new AdjacencyListGraph<ElementoDecorado<Estacion>, Tramo>();
 		File f = new File("metro.dat");
 
 		try {
@@ -43,14 +42,15 @@ public class main {
 	}
 
 	private static <V, E> void shortestPath(
-			Graph<Estacion, Tramo> G,
+			Graph<ElementoDecorado<Estacion>, Tramo> G,
 			String origen, String destino) {
 		// TODO Auto-generated method stub
 		// Buscamos los nodos con la información entrante
 
-		Vertex<Estacion> est_origen=null;
+		Vertex<ElementoDecorado<Estacion>> est_origen=null;
 		Edge<Tramo> tramo= null;
-		Vertex<Estacion> est_destino=null;
+		ElementoDecorado<Tramo> decorado= null;
+		Vertex<ElementoDecorado<Estacion>> est_destino=null;
 		System.out.print("Introduce el nombre de la estacion de origen\n");
 		est_origen=obtenerestacion(G,origen);
 		if(est_origen==null){
@@ -61,24 +61,25 @@ public class main {
 		if(est_destino==null){
 			System.out.print("ERROR");
 		}
-		Iterator<Edge<Tramo>> iter_edges = G
-				.incidentEdges(est_origen).iterator();
+		Iterator<Edge<Tramo>> iter_edges = G.incidentEdges(est_origen).iterator();
 		tramo= iter_edges.next();
+		decorado= new ElementoDecorado<Tramo>(tramo.element());
 		
-		//LLamamos a la funcíon de Dijkstra.
-		Dijkstra<Estacion, Tramo> dijkstra= new Dijkstra<Estacion, Tramo>();
-		dijkstra.execute(G,est_origen,(Integer) tramo.element().getduracion());
+//		LLamamos a la funcíon de Dijkstra.
+		Dijkstra<ElementoDecorado<Estacion>, Tramo> dijkstra= new Dijkstra<ElementoDecorado<Estacion>, Tramo>();
+		dijkstra.execute(G,est_origen);
 		System.out.println("Distancia: "+ dijkstra.getDist(est_destino));
+		System.out.println("Proveniente de: "+ dijkstra.devolverCamino(est_destino));
 	}
 	
-	private static Vertex<Estacion> obtenerestacion(Graph<Estacion, Tramo> grafo,String nombre){
+	private static Vertex<ElementoDecorado<Estacion>> obtenerestacion(Graph<ElementoDecorado<Estacion>, Tramo> grafo,String nombre){
 			
-			Vertex<Estacion> estacion=null;
-			Iterator <Vertex<Estacion>> iter= grafo.vertices().iterator();
+			Vertex<ElementoDecorado<Estacion>> estacion=null;
+			Iterator <Vertex<ElementoDecorado<Estacion>>> iter= grafo.vertices().iterator();
 			
 			while(iter.hasNext()){
-				Vertex<Estacion> v_est1= iter.next();
-				if(nombre.equals(v_est1.element().getNombre())){
+				Vertex<ElementoDecorado<Estacion>> v_est1= iter.next();
+				if(nombre.equals(v_est1.element().elemento().getNombre())){
 					estacion= v_est1;
 					break;
 				}
@@ -87,9 +88,9 @@ public class main {
 	}
 
 	private static void mostrarGrafo(
-			Graph<Estacion, Tramo> grafo) {
+			Graph<ElementoDecorado<Estacion>,Tramo> grafo) {
 		// TODO Auto-generated method stub
-		Iterator<Vertex<Estacion>> iter = grafo.vertices()
+		Iterator<Vertex<ElementoDecorado<Estacion>>> iter = grafo.vertices()
 				.iterator();
 
 		while (iter.hasNext()) {
@@ -98,8 +99,8 @@ public class main {
 			// Con la correspondiente arista.
 
 			// Recogemos el vétice
-			Vertex<Estacion> v_est = iter.next();
-			System.out.print(v_est.element().getNombre());
+			Vertex<ElementoDecorado<Estacion>> v_est = iter.next();
+			System.out.print(v_est.element().elemento().getNombre());
 			System.out.println("\nCorrespondencias con:");
 			Iterator<Edge<Tramo>> iter_edges = grafo
 					.incidentEdges(v_est).iterator();
@@ -110,7 +111,7 @@ public class main {
 				// Hay que mostrar el nombre de la estacion destino teniendo el
 				// cuenta la arista (tramo)
 				System.out.println("Estacion -> "
-						+ grafo.opposite(v_est, ed_est).element().getNombre());
+						+ grafo.opposite(v_est, ed_est).element().elemento().getNombre());
 				System.out.println("\t --> Linea:"
 						+ elemento_tramo.getLinea());
 				System.out.println("\t --> Duracion:"
@@ -122,44 +123,42 @@ public class main {
 
 	}
 
-	private static Graph<Estacion, Tramo> construyeGrafo(
+	private static Graph<ElementoDecorado<Estacion>, Tramo> construyeGrafo(
 			Scanner datos) {
 		// TODO Auto-generated method stub
-		Graph<Estacion, Tramo> grafo =
-				new AdjacencyListGraph<Estacion, Tramo>();
+		Graph<ElementoDecorado<Estacion>, Tramo> grafo = new AdjacencyListGraph<ElementoDecorado<Estacion>, Tramo>();
 
-//		Estacion n1 = null;
-//		Estacion n2 = null;
+		ElementoDecorado<Estacion> n1 = null;
+		ElementoDecorado<Estacion> n2 = null;
 		Tramo tramo = null;
 
 		// Declaración de objetos y variables
-		Iterator<Vertex<Estacion>> iter = null;
+		Iterator<Vertex<ElementoDecorado<Estacion>>> iter = null;
 
 		// Lectura del archivo de texto
 		datos.useDelimiter("[\\;\\n]"); // Delimitadores ';' y salto de linea
 
+		int pasada = 1;
 		while (datos.hasNext()) {
+			//System.out.println("\tPasada # " + pasada);
 			iter = grafo.vertices().iterator();
 
 			// Creamos las estaciones de origen y destino
 			Estacion est_origen = new Estacion(datos.next());
 			Estacion est_destino = new Estacion(datos.next());
 			// Creamos el elementoDecorado para crear los vertices
-//			n1 = new ElementoDecorado<Estacion>(est_origen);
-//			n2 = new ElementoDecorado<Estacion>(est_destino);
+			n1 = new ElementoDecorado<Estacion>(est_origen);
+			n2 = new ElementoDecorado<Estacion>(est_destino);
 
 			// Creamos el tramo entre las estaciones de origen y destino
 			int linea = new Integer(datos.nextInt());
 			int duracion = new Integer(datos.nextInt());
 
-			tramo= new Tramo(linea, duracion);
-			// Tramo camino= new Tramo(datos.nextInt(), datos.nextInt());
-			// Creamos el elementoDecorado para crear la arista
-//			tramo = new ElementoDecorado<Tramo>(camino);
+			tramo = new Tramo(linea, duracion);
 
-			Vertex<Estacion> u = null;
-			Vertex<Estacion> v = null;
-			Vertex<Estacion> aux = null;
+			Vertex<ElementoDecorado<Estacion>> u = null;
+			Vertex<ElementoDecorado<Estacion>> v = null;
+			Vertex<ElementoDecorado<Estacion>> aux = null;
 			boolean n1_existe = false;
 			boolean n2_existe = false;
 
@@ -170,12 +169,17 @@ public class main {
 				aux = iter.next();
 
 				// Si la estación origen existe.
-				if (aux.element().equals(est_origen)) {
+				if (aux.element().equals(n1)) {
+					// System.out.println("Estacion Origen "+
+					// aux.element().toString() + " repetida.");
 					u = aux;
 					n1_existe = true;
 				}
 
-				if (aux.element().equals(est_destino)) {
+				if (aux.element().equals(n2)) {
+
+					// System.out.println("Estacion Destino "+
+					// aux.element().toString() + " repetida.");
 					v = aux;
 					n2_existe = true;
 				}
@@ -183,11 +187,11 @@ public class main {
 
 			// Creamos los vertices para poder agregarlos al grafo
 			if (!n1_existe) {
-				u = grafo.insertVertex(est_origen);
+				u = grafo.insertVertex(n1);
 			}
 
 			if (!n2_existe) {
-				v = grafo.insertVertex(est_destino);
+				v = grafo.insertVertex(n2);
 			}
 
 			if (!grafo.areAdjacent(u, v)) {
@@ -195,6 +199,7 @@ public class main {
 			} else {
 				// System.out.println("El vertice ya existe");
 			}
+
 		}
 
 		return grafo;
