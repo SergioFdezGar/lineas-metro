@@ -1,4 +1,4 @@
-public class ElementoDecorado <T>{
+public class ElementoDecorado <T> implements Comparable<ElementoDecorado<T>>{
   // Se usa el patrón Decorator para decorar el elemento con atributos
   // adicionales
   T elemento;                  // Elemento de datos
@@ -49,4 +49,25 @@ public class ElementoDecorado <T>{
   public String toString(){
     return elemento.toString();    //elemento tiene que tener sobrescrito toString()
   }
+
+/* (non-Javadoc)
+ * @see java.lang.Comparable#compareTo(java.lang.Object)
+ */
+@Override
+public int compareTo(ElementoDecorado<T> arg0) {
+	int ord = 0;
+
+	if (this.distance<(arg0.distancia()))
+		ord = -1;
+	if (this.distance>(arg0.distancia()))
+		ord = 1;
+
+	return ord;
+
+}
+
+  
+  
+  
+
 }
