@@ -31,6 +31,7 @@ public class Dijkstra<V, E> {
     	for (Vertex<ElementoDecorado<Estacion>> u : grafo.vertices()) {
             int u_dist;
 
+            
             if (u == v) {
                     u_dist = 0;
                     u.element().setParent(v.element());
