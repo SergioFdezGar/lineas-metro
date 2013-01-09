@@ -1,8 +1,12 @@
 package Fran;
+
+
+
 import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
+import net.datastructures.AdjacencyListGraph;
 import net.datastructures.Edge;
 import net.datastructures.Graph;
 import net.datastructures.Vertex;
@@ -40,6 +44,7 @@ public class Dijkstra<V, E> {
             }
             
             u.element().setDistancia(u_dist);
+            u.element().setVisitado(false);
             grafo.replace(u, u.element());
             Q.add(u.element());
         }
@@ -52,6 +57,7 @@ public class Dijkstra<V, E> {
             if (u_dist == INFINITO) {
                 continue;
             }
+            
             
             //Buscamos la estación en el grafo para acceder a los adyacentes.
             Vertex<ElementoDecorado<Estacion>> inicio= buscarVertice(u_entry);
@@ -87,6 +93,7 @@ public class Dijkstra<V, E> {
                 }
             }
         }
+  
        
     }
 
@@ -110,38 +117,28 @@ public class Dijkstra<V, E> {
 		}
 
 
-		public String devolverCamino(Vertex<ElementoDecorado<Estacion>> destino){
+		public Graph<ElementoDecorado<Estacion>, Tramo> devolverCamino(Vertex<ElementoDecorado<Estacion>> destino){
 			//Mientras que no lleguemos al vertice de inicio
 			Vertex<ElementoDecorado<Estacion>> aux=destino;
+			Graph<ElementoDecorado<Estacion>, Tramo> camino = new AdjacencyListGraph<ElementoDecorado<Estacion>, Tramo>();
 			Stack <Vertex<ElementoDecorado<Estacion>>> pila=new Stack<Vertex<ElementoDecorado<Estacion>>>();
 			while(!aux.element().parent().equals(aux.element())){
 			    pila.push(aux);
 				aux= buscarVertice(aux.element().parent());	
 			}
-			
-			String estaciones=aux.element().elemento.getNombre();
-			int control=pila.peek().element().aristaParent.getLinea();
-			int transbordos=0;
+			pila.push(aux);
+			Vertex<ElementoDecorado<Estacion>> origen=pila.pop();
+			camino.insertVertex(origen.element());
+			Vertex<ElementoDecorado<Estacion>> siguiente=null;
 			do{
-				aux=pila.pop();
-				if(control==aux.element().aristaParent.getLinea()){
-					estaciones=estaciones+" --> "+aux.element().elemento.getNombre();
-				}
-				else{
-					transbordos++;
-					control=aux.element().aristaParent.getLinea();
-					estaciones=estaciones+"** Transbordo a la linea "+control+" direccion: "
-					+aux.element().elemento.getNombre()+"**"+" --> "+aux.element().elemento.getNombre();
-					
-				}
-				
+				siguiente=pila.pop();
+				camino.insertVertex(siguiente.element());
+				camino.insertEdge(origen, siguiente, siguiente.element().aristaParent());
+				origen=destino;
 				
 			}while(!pila.isEmpty());
-			
-			estaciones=estaciones + " **Final de trayecto**"+"\n"+"Total de transbordos: "+transbordos;
-			 Q.clear();
-		     grafo=null;
-			return estaciones;
+		
+			return camino;
 		}
 
 	

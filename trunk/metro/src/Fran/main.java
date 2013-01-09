@@ -28,19 +28,24 @@ public class main {
 
 		try {
 			Scanner datos = new Scanner(f);
+			Scanner leer=new Scanner(System.in);
 			grafo = construyeGrafo(datos);
 			System.out.println("Listado de estaciones y adyacentes");
 			mostrarGrafo(grafo);
-
+			
+			System.out.print("\nQuieres saber el camino mas corto entre dos estacioens? [Si/No]: ");
+			if(respSiNO(leer.next())){
 			// Parte en la que recogemos dos estaciones y marcamos el camino mas
 			// corto.
 			// Por ahora vamos a dar dos estaciones por codigo.
-			do{
-				shortestPath(grafo);
+				do{
+					shortestPath(grafo);
 			
-			}while(quererintroducr());
+				}while(quererintroducr());
 			
-
+				System.out.print("\n\t***BUEN VIAJE***");
+			
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -49,7 +54,7 @@ public class main {
 
 	private static boolean quererintroducr() {
 		Scanner leer = new Scanner(System.in);
-		System.out.print("Quieres buscar mas recorridos? [Si/No]: ");
+		System.out.print("\nQuieres buscar mas recorridos? [Si/No]: ");
 		return respSiNO(leer.nextLine());
 	}
 
@@ -72,25 +77,64 @@ public class main {
 		Vertex<ElementoDecorado<Estacion>> est_destino=null;
 		
 		
-		System.out.print("Introduce el nombre de la estacion de origen\n");
+		System.out.print("\nIntroduce el nombre de la estacion de origen\n");
 		est_origen=introducirdatos(G);
 		
 		System.out.print("Introduce el nombre de la estacion de destino\n");
 		est_destino=introducirdatos(G);
-	
-	
-		Iterator<Edge<Tramo>> iter_edges = G.incidentEdges(est_origen).iterator();
-		tramo= iter_edges.next();
-		decorado= new ElementoDecorado<Tramo>(tramo.element());
 		
 //		LLamamos a la funcíon de Dijkstra.
 		Dijkstra<ElementoDecorado<Estacion>, Tramo> dijkstra= new Dijkstra<ElementoDecorado<Estacion>, Tramo>();
 		dijkstra.execute(G,est_origen);
-		System.out.println("Distancia : "+ dijkstra.getDist(est_destino)+ " min");
-		System.out.println("Estacion Origen: "+dijkstra.devolverCamino(est_destino));
+		
+		G=dijkstra.devolverCamino(est_destino);
+		mostrarCamino(G);
+		System.out.println("\nDistancia total: "+ dijkstra.getDist(est_destino)+ " min");
 		
 	}
 	
+	private static void mostrarCamino(Graph<ElementoDecorado<Estacion>, Tramo> grafo) {
+		
+		Iterator<Vertex<ElementoDecorado<Estacion>>> iter = grafo.vertices()
+				.iterator();
+		/*El primer vertice no puede ser la primera estacion, porque no tiene arista de inicio*/
+		iter.next();
+		/*La linea de control es la que une la estacion origen con la estacion siguiente que es la de destion*/
+		int control=iter.next().element().aristaParent.getLinea();
+		int ntransbordos=0;
+		/*Incializo los dos vertices el origen y destion*/
+		iter=grafo.vertices().iterator();
+		Vertex<ElementoDecorado<Estacion>> v_est=iter.next();
+		Vertex<ElementoDecorado<Estacion>> v_dest=null;
+		while(iter.hasNext()){
+			v_dest=iter.next();
+			if(control==v_dest.element().aristaParent.getLinea()){
+				System.out.print("\nEstacion: "+v_est.element().elemento().getNombre()
+				+"\nCorrespondencia con: "+v_dest.element().elemento.getNombre()
+				+"\n--> Duracion: "+v_dest.element().aristaParent().getduracion()+" min"
+				+"\n--> Linea: "+control+"\n");
+			}
+			else{
+				System.out.println("\n**Transbordo en: "+v_est.element().elemento.getNombre()
+				+" Correspondencia con la linea "+v_dest.element().aristaParent.getLinea()
+				+" Direccion: "+v_dest.element().elemento.getNombre()+"**"+"\n"
+				+"\nEstacion: "+v_est.element().elemento().getNombre()
+				+"\nCorrespondencia con: "+v_dest.element().elemento.getNombre()
+				+"\n--> Duracion: "+v_dest.element().aristaParent().getduracion()+" min"
+				+"\n--> Linea: "+v_dest.element().aristaParent().getLinea()+"\n");
+		
+				control=v_dest.element().aristaParent.getLinea();
+				ntransbordos++;
+			}
+			v_est=v_dest;
+		}	
+		
+		System.out.print("\n**FINAL DE TRAYECTO**\nTotal transbordos: "+ntransbordos);
+
+		
+		
+	}
+
 	private static Vertex<ElementoDecorado<Estacion>> introducirdatos(Graph<ElementoDecorado<Estacion>, Tramo> G) {
 		Vertex<ElementoDecorado<Estacion>> estacion=null;
 		Scanner leer=new Scanner(System.in);
@@ -202,16 +246,11 @@ public class main {
 
 				// Si la estación origen existe.
 				if (aux.element().equals(n1)) {
-					// System.out.println("Estacion Origen "+
-					// aux.element().toString() + " repetida.");
 					u = aux;
 					n1_existe = true;
 				}
 
-				if (aux.element().equals(n2)) {
-
-					// System.out.println("Estacion Destino "+
-					// aux.element().toString() + " repetida.");
+				if (aux.element().equals(n2)) {;
 					v = aux;
 					n2_existe = true;
 				}

@@ -4,10 +4,6 @@ public class Tramo {
 	private int duracion;
 	private int linea;
 	
-	/**
-	 * @param linea
-	 * @param duracion
-	 */
 	public Tramo(int duracion, int linea) {
 		this.duracion = duracion;
 		this.linea = linea;
