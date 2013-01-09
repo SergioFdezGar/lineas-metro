@@ -126,6 +126,9 @@ public class Dijkstra<V, E> {
                     	z.element().setDistancia(tiempo);
                     	//Indicamos cual es el nodo del que proviene
                     	z.element().setParent(inicio.element());
+                    	//Guardamos la arista de la que proviene
+                    	//z.element().setAristaParent(buscarArista(fuente, antecesor))
+                    	
                     	Vertex<ElementoDecorado<Estacion>> modificado= buscarVertice(z.element());
                     	
                     	//Modificamos la informacion en el grafo

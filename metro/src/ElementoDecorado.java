@@ -5,7 +5,7 @@ public class ElementoDecorado <T> implements Comparable<ElementoDecorado<T>>{
   boolean visitado=false;      // Atributo de nodo visitado
   ElementoDecorado<T> parent=null; // Nodo desde el que se accedió a éste
   int distance=0;              // Distancia (en vértices) desde el nodo original
-  T aristaParent=null;      //Arista del nodo parent
+  Tramo aristaParent=null;      //Arista del nodo parent
 
   public ElementoDecorado (T element){
     elemento=element;
@@ -24,7 +24,7 @@ public class ElementoDecorado <T> implements Comparable<ElementoDecorado<T>>{
   public int distancia(){
     return distance;
   }
-  public T aristaParent(){
+  public Tramo aristaParent(){
     return aristaParent;
   }
 
@@ -39,7 +39,7 @@ public class ElementoDecorado <T> implements Comparable<ElementoDecorado<T>>{
   public void setVisitado(boolean t){
     visitado=t;
   }
-  public void setAristaParent(T arista){
+  public void setAristaParent(Tramo arista){
     aristaParent=arista;
   }  
   
