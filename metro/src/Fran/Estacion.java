@@ -3,9 +3,7 @@ package Fran;
 public class Estacion {
 
         private String nombre;
-        /**
-         * @param nombre
-         */
+  
         public Estacion(String nombre) {
                 super();
                 this.nombre = nombre;

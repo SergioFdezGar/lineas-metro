@@ -54,7 +54,6 @@ public class ElementoDecorado <T> implements Comparable<ElementoDecorado<T>>{
 /* (non-Javadoc)
  * @see java.lang.Comparable#compareTo(java.lang.Object)
  */
-@Override
 public int compareTo(ElementoDecorado<T> arg0) {
 	int ord = 0;
 
