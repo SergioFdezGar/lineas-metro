@@ -11,7 +11,7 @@ public class ElementoDecorado <T> implements Comparable<ElementoDecorado<T>>{
   public ElementoDecorado (T element){
     elemento=element;
   }
-
+ 
   //Métodos de consulta
   public T elemento(){
     return elemento;

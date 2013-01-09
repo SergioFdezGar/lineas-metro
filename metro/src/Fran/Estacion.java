@@ -11,6 +11,7 @@ public class Estacion {
                 this.nombre = nombre;
                 
         }
+        
 
         /**
          * @return the nombre
