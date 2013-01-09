@@ -86,6 +86,7 @@ public class Dijkstra<V, E> {
                 }
             }
         }
+       
     }
 
 		private Vertex<ElementoDecorado<Estacion>> buscarVertice(
@@ -137,7 +138,8 @@ public class Dijkstra<V, E> {
 			}while(!pila.isEmpty());
 			
 			estaciones=estaciones + " **Final de trayecto**"+"\n"+"Total de transbordos: "+transbordos;
-	
+			 Q.clear();
+		     grafo=null;
 			return estaciones;
 		}
 
