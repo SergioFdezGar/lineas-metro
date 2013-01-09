@@ -33,15 +33,17 @@ public class main {
 			// Parte en la que recogemos dos estaciones y marcamos el camino más
 			// corto.
 			// Por ahora vamos a dar dos estaciones por codigo.
-			shortestPath(grafo, "Alonso Cano", "Colombia");
+			mostrarGrafo(shortestPath(grafo, "Alonso Cano", "Colombia"));
 
+			
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private static <V, E> void shortestPath(
+	private static Graph<ElementoDecorado<Estacion>, Tramo> shortestPath(
 			Graph<ElementoDecorado<Estacion>, Tramo> G,
 			String origen, String destino) {
 		// TODO Auto-generated method stub
@@ -68,8 +70,10 @@ public class main {
 //		LLamamos a la funcíon de Dijkstra.
 		Dijkstra<ElementoDecorado<Estacion>, Tramo> dijkstra= new Dijkstra<ElementoDecorado<Estacion>, Tramo>();
 		dijkstra.execute(G,est_origen);
-		System.out.println("Distancia: "+ dijkstra.getDist(est_destino));
-		System.out.println("Proveniente de: "+ dijkstra.devolverCamino(est_destino));
+		//Almacenamos en un nuevo grafo, el recorrido más corto.
+		G= dijkstra.devolverCamino(est_destino);
+		//Devolvemos el nuevo grafo con el camino.
+		return G;
 	}
 	
 	private static Vertex<ElementoDecorado<Estacion>> obtenerestacion(Graph<ElementoDecorado<Estacion>, Tramo> grafo,String nombre){
