@@ -19,95 +19,80 @@ import net.datastructures.Vertex;
  */
 public class FernandezLucas_Fernandez {
 
-	/**
-	 * 
-	 * @param args
-	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 	
 		Graph<ElementoDecorado<Estacion>, Tramo> grafo = new AdjacencyListGraph<ElementoDecorado<Estacion>, Tramo>();
 		File f = new File("metro.dat");
 	
 		try {
 			Scanner datos = new Scanner(f);
-			Scanner leer = new Scanner(System.in);
 			grafo = construyeGrafo(datos);
-			System.out.println("Listado de estaciones y adyacentes");
 			mostrarGrafo(grafo);
 	
-			System.out
-					.print("\nQuieres saber el camino mas corto entre dos estaciones? [Si/No]: ");
-			if (respSiNO(leer.next())) {
-				// Parte en la que recogemos dos estaciones y marcamos el camino
-				// mas
-				// corto.
-				// Por ahora vamos a dar dos estaciones por codigo.
-				do {
-					shortestPath(grafo);
+			do {
+			/* Parte en la que recogemos dos estaciones y marcamos el camino
+				mas corto.*/
+				shortestPath(grafo);
 	
-				} while (quererintroducr());
+			} while (quererintroducr());
 	
-				System.out.print("\n\t***BUEN VIAJE***");
+			System.out.print("\n\t***BUEN VIAJE***");
 	
-			}
+			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	private static Graph<ElementoDecorado<Estacion>, Tramo> construyeGrafo(
 			Scanner datos) {
-		// TODO Auto-generated method stub
 		Graph<ElementoDecorado<Estacion>, Tramo> grafo = new AdjacencyListGraph<ElementoDecorado<Estacion>, Tramo>();
 
 		ElementoDecorado<Estacion> n1 = null;
 		ElementoDecorado<Estacion> n2 = null;
 		Tramo tramo = null;
 
-		// Declaración de objetos y variables
+		/*Declaracion de objetos y variables*/
 		Iterator<Vertex<ElementoDecorado<Estacion>>> iter = null;
 
-		// Lectura del archivo de texto
-		datos.useDelimiter("[\\;\\n]"); // Delimitadores ';' y salto de linea
+		/*Lectura del archivo de texto*/
+		datos.useDelimiter("[\\;\\n]"); /* Delimitadores ';' y salto de linea*/
 
 		while (datos.hasNext()) {
 			iter = grafo.vertices().iterator();
 
-			// Creamos las estaciones de origen y destino
+			/* Creamos las estaciones de origen y destino*/
 			Estacion est_origen = new Estacion(datos.next());
 			Estacion est_destino = new Estacion(datos.next());
-			// Creamos el elementoDecorado para crear los vertices
+			
+			/* Creamos el elementoDecorado para crear los vertices*/
 			n1 = new ElementoDecorado<Estacion>(est_origen);
 			n2 = new ElementoDecorado<Estacion>(est_destino);
 
-			// Creamos el tramo entre las estaciones de origen y destino
+			/* Creamos el tramo entre las estaciones de origen y destino*/
 			int linea = new Integer(datos.nextInt());
 			int duracion = new Integer(datos.nextInt());
-
 			tramo = new Tramo(linea, duracion);
-
+			
 			Vertex<ElementoDecorado<Estacion>> u = null;
 			Vertex<ElementoDecorado<Estacion>> v = null;
 			Vertex<ElementoDecorado<Estacion>> aux = null;
 			boolean n1_existe = false;
 			boolean n2_existe = false;
 
-			// Parte en la que vemos si coinciden los vertices
+			/*Parte en la que vemos si coinciden los vertices*/
 			while (iter.hasNext()) {
 
-				// Comprobamos si ya existen los vértices
+				/* Comprobamos si ya existen los vertices*/
 				aux = iter.next();
 
-				// Si la estación origen existe.
+				/*Si la estacion origen existe.*/
 				if (aux.element().equals(n1)) {
 					u = aux;
 					n1_existe = true;
 				}
 
 				if (aux.element().equals(n2)) {
-					;
 					v = aux;
 					n2_existe = true;
 				}
@@ -124,9 +109,7 @@ public class FernandezLucas_Fernandez {
 
 			if (!grafo.areAdjacent(u, v)) {
 				grafo.insertEdge(u, v, tramo);
-			} else {
-				// System.out.println("El vertice ya existe");
-			}
+			} 
 
 		}
 
@@ -137,11 +120,12 @@ public class FernandezLucas_Fernandez {
 			Graph<ElementoDecorado<Estacion>, Tramo> G) {
 		Vertex<ElementoDecorado<Estacion>> estacion = null;
 		Scanner leer = new Scanner(System.in);
+		/*buscamos si el nombre de la estacion corresponde con alguna del grafo*/
 		while (estacion == null) {
 			estacion = obtenerestacion(G, leer.nextLine());
 			if (estacion == null) {
-				System.out.print("ERROR, estacion no encontrada\n");
-				System.out.print("Introduce de nuevo la estacion\n");
+				System.out.print("\n\t**ERROR, estacion no encontrada**\n");
+				System.out.print("\nIntroduce el  nombre de la estacion\n");
 			}
 		}
 		return estacion;
@@ -154,7 +138,7 @@ public class FernandezLucas_Fernandez {
 				.iterator();
 		/*
 		 * El primer vertice no puede ser la primera estacion, porque no tiene
-		 * arista de inicio
+		 * arista 
 		 */
 		iter.next();
 		/*
@@ -167,66 +151,51 @@ public class FernandezLucas_Fernandez {
 		iter = grafo.vertices().iterator();
 		Vertex<ElementoDecorado<Estacion>> v_est = iter.next();
 		Vertex<ElementoDecorado<Estacion>> v_dest = null;
+		
+		System.out.print("\nEstacion: "+ v_est.element().elemento().getNombre()
+				+ "\nCorrespondencia con: ");
+		
 		while (iter.hasNext()) {
 			v_dest = iter.next();
-			if (control == v_dest.element().aristaParent.getLinea()) {
-				System.out.print("\nEstacion: "
-						+ v_est.element().elemento().getNombre()
-						+ "\nCorrespondencia con: "
-						+ v_dest.element().elemento.getNombre()
-						+ "\n--> Duracion: "
-						+ v_dest.element().aristaParent().getduracion()
-						+ " min" + "\n--> Linea: " + control + "\n");
-			} else {
-				System.out.println("\n**Transbordo en: "
-						+ v_est.element().elemento.getNombre()
-						+ " Correspondencia con la linea "
-						+ v_dest.element().aristaParent.getLinea()
-						+ " Direccion: "
-						+ v_dest.element().elemento.getNombre() + "**" + "\n"
-						+ "\nEstacion: "
-						+ v_est.element().elemento().getNombre()
-						+ "\nCorrespondencia con: "
-						+ v_dest.element().elemento.getNombre()
-						+ "\n--> Duracion: "
-						+ v_dest.element().aristaParent().getduracion()
-						+ " min" + "\n--> Linea: "
-						+ v_dest.element().aristaParent().getLinea() + "\n");
-
+			if (control != v_dest.element().aristaParent.getLinea()) {
+				/*informacion del transbordo*/
+				System.out.print("\n**Transbordo a la linea "+ v_dest.element().aristaParent.getLinea()
+						+ " Direccion: "+ v_dest.element().elemento.getNombre() + "**");
+				
 				control = v_dest.element().aristaParent.getLinea();
 				ntransbordos++;
-			}
+			} 
+			
+			System.out.print(" \n \t--> "+v_dest.element().elemento.getNombre());
 			v_est = v_dest;
 		}
-
-		System.out.print("\n**FINAL DE TRAYECTO**\nTotal transbordos: "
+		System.out.print("\n\t**FINAL DE TRAYECTO**\nTotal transbordos: "
 				+ ntransbordos);
 
 	}
 
 	private static void mostrarGrafo(
 			Graph<ElementoDecorado<Estacion>, Tramo> grafo) {
-		// TODO Auto-generated method stub
 		Iterator<Vertex<ElementoDecorado<Estacion>>> iter = grafo.vertices()
 				.iterator();
-
+		System.out.println("Listado de estaciones y adyacentes");
 		while (iter.hasNext()) {
-			// Vamos pasando de estación en estacion y mostramos los vértices
-			// adyacentes
-			// Con la correspondiente arista.
-
-			// Recogemos el vétice
+			/* Vamos pasando de estacion en estacion y mostramos los vertices adyacentes
+			 Con la correspondiente arista. Recogemos el vertice*/
+			
 			Vertex<ElementoDecorado<Estacion>> v_est = iter.next();
-			System.out.print(v_est.element().elemento().getNombre());
+			System.out.print("\nOrigen en: "+v_est.element().elemento().getNombre());
 			System.out.println("\nCorrespondencias con:");
 			Iterator<Edge<Tramo>> iter_edges = grafo.incidentEdges(v_est)
 					.iterator();
 
 			while (iter_edges.hasNext()) {
+				/*Hay que mostrar el nombre de la estacion destino teniendo el
+				 cuenta la arista (tramo)*/
+				
 				Edge<Tramo> ed_est = iter_edges.next();
 				Tramo elemento_tramo = ed_est.element();
-				// Hay que mostrar el nombre de la estacion destino teniendo el
-				// cuenta la arista (tramo)
+				/*Mostramos la informacion*/
 				System.out.println("Estacion -> "
 						+ grafo.opposite(v_est, ed_est).element().elemento()
 								.getNombre());
@@ -242,6 +211,7 @@ public class FernandezLucas_Fernandez {
 
 	private static Vertex<ElementoDecorado<Estacion>> obtenerestacion(
 			Graph<ElementoDecorado<Estacion>, Tramo> grafo, String nombre) {
+		/*Buscamos en el grafo el vertices correspondiente*/
 
 		Vertex<ElementoDecorado<Estacion>> estacion = null;
 		Iterator<Vertex<ElementoDecorado<Estacion>>> iter = grafo.vertices()
@@ -258,7 +228,10 @@ public class FernandezLucas_Fernandez {
 		return estacion;
 	}
 
+	
 	private static boolean quererintroducr() {
+		/*Preguntamos si el usuario quiere buscar mas recorridos*/
+		
 		Scanner leer = new Scanner(System.in);
 		System.out.print("\nQuieres buscar mas recorridos? [Si/No]: ");
 		return respSiNO(leer.nextLine());
@@ -274,22 +247,31 @@ public class FernandezLucas_Fernandez {
 	}
 
 	private static void shortestPath(Graph<ElementoDecorado<Estacion>, Tramo> G) {
-		// Buscamos los nodos con la informacion entrante
-
+		/*Buscamos los nodos con la informacion entrante*/
 		Vertex<ElementoDecorado<Estacion>> est_origen = null;
 		Vertex<ElementoDecorado<Estacion>> est_destino = null;
+		
+		/*Si la estacion origen es igual que la estacion destino */
+		do{
+			System.out.print("\nIntroduce el nombre de la estacion de origen\n");
+			est_origen = introducirdatos(G);
 
-		System.out.print("\nIntroduce el nombre de la estacion de origen\n");
-		est_origen = introducirdatos(G);
+			System.out.print("Introduce el nombre de la estacion de destino\n");
+			est_destino = introducirdatos(G);
+			
+		/*Si las estaciones son iguales nos informa del error*/
+		if(est_origen.element().equals(est_destino.element())){
+			System.out.print("\t**Error las estaciones son iguales**");
+		}
+		}while(est_origen.element().equals(est_destino.element()));
+		
 
-		System.out.print("Introduce el nombre de la estacion de destino\n");
-		est_destino = introducirdatos(G);
-
-		// LLamamos a la funcíon de Dijkstra.
+		// LLamamos a la funcion de Dijkstra.
 		Dijkstra<ElementoDecorado<Estacion>, Tramo> dijkstra = new Dijkstra<ElementoDecorado<Estacion>, Tramo>();
 		dijkstra.execute(G, est_origen);
 
 		G = dijkstra.devolverCamino(est_destino);
+		System.out.println("\n\t*** INFORMACION DEL CAMINO MAS CORTO ***");
 		mostrarCamino(G);
 		System.out.println("\nDistancia total: "
 				+ dijkstra.getDist(est_destino) + " min");
@@ -308,6 +290,7 @@ class Dijkstra<V, E> {
 
 	private Vertex<ElementoDecorado<Estacion>> buscarVertice(
 			ElementoDecorado<Estacion> u_entry) {
+		/*buscamos el vertice pero en el grafo de dikjstra*/
 		Vertex<ElementoDecorado<Estacion>> source = null;
 
 		Iterator<Vertex<ElementoDecorado<Estacion>>> iter_vertices = grafo
@@ -327,21 +310,22 @@ class Dijkstra<V, E> {
 
 	public Graph<ElementoDecorado<Estacion>, Tramo> devolverCamino(
 			Vertex<ElementoDecorado<Estacion>> destino) {
-
+		/*devolvemos el grafo con las estaciones que forman el camino mas corto*/
+		
 		Graph<ElementoDecorado<Estacion>, Tramo> camino = new AdjacencyListGraph<ElementoDecorado<Estacion>, Tramo>();
 		Vertex<ElementoDecorado<Estacion>> aux = destino;
 		Vertex<ElementoDecorado<Estacion>> inicio = null;
 		Stack<Vertex<ElementoDecorado<Estacion>>> stack_estaciones = new Stack<Vertex<ElementoDecorado<Estacion>>>();
 
-		// Volcamos a pila todas las estaciones
+		/* Volcamos a pila todas las estaciones*/
 		while (!aux.element().equals(aux.element().parent())) {
 			stack_estaciones.push(aux);
 			aux = buscarVertice(aux.element().parent());
 		}
 		stack_estaciones.push(aux);
 
-		// Insertamos los datos en un nuevo grafo.
-		// Buscamos su antecesor en el recorrido.
+		/*Insertamos los datos en un nuevo grafo.
+		 Buscamos su antecesor en el recorrido.*/
 		inicio = stack_estaciones.pop();
 		camino.insertVertex(inicio.element());
 		while (!stack_estaciones.isEmpty()) {
@@ -355,7 +339,7 @@ class Dijkstra<V, E> {
 	}
 
 	public void dijkstraVisit(Vertex<ElementoDecorado<Estacion>> v) {
-		// Inicializamos los valores de los vertices para realizar el cálculo.
+		/*Inicializamos los valores de los vertices para realizar el calculo*/
 		for (Vertex<ElementoDecorado<Estacion>> u : grafo.vertices()) {
 			int u_dist = 0;
 
@@ -383,7 +367,7 @@ class Dijkstra<V, E> {
 				continue;
 			}
 
-			// Buscamos la estación en el grafo para acceder a los adyacentes.
+			/*Buscamos la estacion en el grafo para acceder a los adyacentes*/
 			Vertex<ElementoDecorado<Estacion>> inicio = buscarVertice(u_entry);
 			inicio.element().setVisitado(true);
 			for (Edge<Tramo> e : grafo.incidentEdges(inicio)) {
@@ -436,12 +420,12 @@ class Dijkstra<V, E> {
 }
 
 class ElementoDecorado<T> implements Comparable<ElementoDecorado<T>> {
-	// Se usa el patrón Decorator para decorar el elemento con atributos
+	// Se usa el patron Decorator para decorar el elemento con atributos
 	// adicionales
 	T elemento; // Elemento de datos
 	boolean visitado = false; // Atributo de nodo visitado
-	ElementoDecorado<T> parent = null; // Nodo desde el que se accedió a éste
-	int distance = 0; // Distancia (en vértices) desde el nodo original
+	ElementoDecorado<T> parent = null; // Nodo desde el que se accedia a este
+	int distance = 0; // Distancia (en vertices) desde el nodo original
 	Tramo aristaParent = null; // Arista del nodo parent
 
 	public ElementoDecorado(T element) {
@@ -451,14 +435,10 @@ class ElementoDecorado<T> implements Comparable<ElementoDecorado<T>> {
 	public Tramo aristaParent() {
 		return aristaParent;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	@Override
+	
 	public int compareTo(ElementoDecorado<T> arg0) {
+		/*sobrescribimos el comparte de la cola de prioridad*/
+		
 		int ord = 0;
 
 		if (this.distance < (arg0.distancia()))
@@ -474,7 +454,7 @@ class ElementoDecorado<T> implements Comparable<ElementoDecorado<T>> {
 		return distance;
 	}
 
-	// Métodos de consulta
+	// Metodos de consulta
 	public T elemento() {
 		return elemento;
 	}
@@ -496,7 +476,7 @@ class ElementoDecorado<T> implements Comparable<ElementoDecorado<T>> {
 		distance = d;
 	}
 
-	// Métodos de actualización
+	// Metodos de actualización
 	public void setParent(ElementoDecorado<T> u) {
 		parent = u;
 	}
@@ -519,21 +499,10 @@ class ElementoDecorado<T> implements Comparable<ElementoDecorado<T>> {
 class Estacion {
 
 	private String nombre;
-
-	/**
-	 * @param nombre
-	 */
 	public Estacion(String nombre) {
-		super();
 		this.nombre = nombre;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
+	
 	public boolean equals(Object obj) {
 		boolean igual = true;
 
@@ -551,27 +520,15 @@ class Estacion {
 		return igual;
 	}
 
-	/**
-	 * @return the nombre
-	 */
 	public String getNombre() {
 		return nombre;
 	}
-
-	/**
-	 * @param nombre
-	 *            the nombre to set
-	 */
+	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
+	
 	public String toString() {
 		return "Estacion [nombre=" + nombre + "]";
 	}
@@ -591,12 +548,6 @@ class Tramo {
 		this.linea = linea;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
