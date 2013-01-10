@@ -1,3 +1,4 @@
+package Sergio;
 public class ElementoDecorado <T> implements Comparable<ElementoDecorado<T>>{
   // Se usa el patrón Decorator para decorar el elemento con atributos
   // adicionales

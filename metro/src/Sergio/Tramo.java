@@ -1,3 +1,4 @@
+package Sergio;
 
 public class Tramo {
 	private int duracion;
