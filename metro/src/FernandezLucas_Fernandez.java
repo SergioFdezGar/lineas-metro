@@ -147,6 +147,16 @@ public class FernandezLucas_Fernandez {
 		 */
 		int control = iter.next().element().aristaParent.getLinea();
 		int ntransbordos = 0;
+		
+		/**  --------------------------------------
+		 * INICIO:
+		 * CREACIÓN DE UNA VARIABLE PARA CONTAR LAS
+		 *  ESTACIONES VISITADAS
+		  ------------------------------------------ */
+		int num_estaciones=1;
+		//---------------------------------------------
+		
+		
 		/* Incializo los dos vertices el origen y destion */
 		iter = grafo.vertices().iterator();
 		Vertex<ElementoDecorado<Estacion>> v_est = iter.next();
@@ -155,8 +165,15 @@ public class FernandezLucas_Fernandez {
 		System.out.print("\nEstacion: "+ v_est.element().elemento().getNombre()
 				+ "\nCorrespondencia con: ");
 		
+		
+		
 		while (iter.hasNext()) {
 			v_dest = iter.next();
+			
+			
+			// INCREMENTO DE LA VARIABE QUE CUENTA LAS ESTACIONES
+			num_estaciones++;
+			
 			if (control != v_dest.element().aristaParent.getLinea()) {
 				/*informacion del transbordo*/
 				System.out.print("\n**Transbordo a la linea "+ v_dest.element().aristaParent.getLinea()
@@ -169,9 +186,15 @@ public class FernandezLucas_Fernandez {
 			System.out.print(" \n \t--> "+v_dest.element().elemento.getNombre());
 			v_est = v_dest;
 		}
-		System.out.print("\n\t**FINAL DE TRAYECTO**\nTotal transbordos: "
-				+ ntransbordos);
-
+		System.out.print("\n\t**FINAL DE TRAYECTO**");
+		System.out.print("\nTotal transbordos: "+ ntransbordos);
+		
+		/**  --------------------------------------
+		 * INICIO:
+		 * IMPRIMIMOS EL NUMERO DE ESTACIONES VISITADAS
+		  ------------------------------------------ */
+		System.out.print("\nNumero de estaciones visitadas: "+ num_estaciones);
+		//-------------------------------------
 	}
 
 	private static void mostrarGrafo(
@@ -273,9 +296,27 @@ public class FernandezLucas_Fernandez {
 		G = dijkstra.devolverCamino(est_destino);
 		System.out.println("\n\t*** INFORMACION DEL CAMINO MAS CORTO ***");
 		mostrarCamino(G);
+		
+		
+		
+		/**  --------------------------------------
+		 * INICIO:
+		 * MODIFICACIÓN PARA EL EJERCICIO DE EXAMEN
+		  ------------------------------------------ */
+		
+		
+		int duracion= dijkstra.getDist(est_destino);
 		System.out.println("\nDistancia total: "
-				+ dijkstra.getDist(est_destino) + " min");
-
+				+ duracion + " min");
+		
+		if(duracion>20){
+			System.out.println("\n[!] Precaucion, el trayecto dura mas de 20 minutos [!]");
+		}
+		/**  --------------------------------------
+		 * FINAL:
+		 * MODIFICACIÓN PARA EL EJERCICIO DE EXAMEN
+		  ------------------------------------------ */
+		
 	}
 
 }
